@@ -67,8 +67,8 @@
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.gPanel1 = new Portfolio1.GPanel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.gPanel1 = new Portfolio1.GPanel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -76,6 +76,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -84,7 +85,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(603, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(845, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -288,6 +289,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripButton,
@@ -301,7 +303,7 @@
             this.helpToolStripButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 28);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(603, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(845, 27);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -380,25 +382,15 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 454);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(603, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(845, 25);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // gPanel1
-            // 
-            this.gPanel1.BackColor = System.Drawing.Color.Aqua;
-            this.gPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gPanel1.Location = new System.Drawing.Point(0, 55);
-            this.gPanel1.Name = "gPanel1";
-            this.gPanel1.Size = new System.Drawing.Size(603, 399);
-            this.gPanel1.TabIndex = 3;
-            this.gPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.gPanel1_Paint);
-            this.gPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gPanel1_MouseClick);
             // 
             // toolStripStatusLabel1
             // 
@@ -406,18 +398,31 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(21, 20);
             this.toolStripStatusLabel1.Text = "ss";
             // 
+            // gPanel1
+            // 
+            this.gPanel1.BackColor = System.Drawing.Color.Aqua;
+            this.gPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gPanel1.Location = new System.Drawing.Point(0, 55);
+            this.gPanel1.Name = "gPanel1";
+            this.gPanel1.Size = new System.Drawing.Size(845, 399);
+            this.gPanel1.TabIndex = 3;
+            this.gPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.gPanel1_Paint);
+            this.gPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gPanel1_MouseClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(603, 479);
+            this.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ClientSize = new System.Drawing.Size(845, 479);
             this.Controls.Add(this.gPanel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Game Of Life";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
