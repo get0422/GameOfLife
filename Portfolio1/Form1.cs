@@ -165,5 +165,15 @@ namespace Portfolio1
                gPanel1.BackColor = dlg.Color;
             }
         }
+
+        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            DialogBox dlg = new DialogBox();
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+
+            }
+
+        }
     }
 }

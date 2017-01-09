@@ -72,6 +72,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gPanel1 = new Portfolio1.GPanel();
+            this.optionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -403,9 +404,10 @@
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.colorToolStripMenuItem});
+            this.colorToolStripMenuItem,
+            this.optionsToolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(182, 58);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(137, 56);
             // 
             // colorToolStripMenuItem
             // 
@@ -417,6 +419,7 @@
             // gPanel1
             // 
             this.gPanel1.BackColor = System.Drawing.Color.Aqua;
+            this.gPanel1.ContextMenuStrip = this.contextMenuStrip1;
             this.gPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gPanel1.Location = new System.Drawing.Point(0, 55);
             this.gPanel1.Name = "gPanel1";
@@ -424,6 +427,13 @@
             this.gPanel1.TabIndex = 3;
             this.gPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.gPanel1_Paint);
             this.gPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gPanel1_MouseClick);
+            // 
+            // optionsToolStripMenuItem1
+            // 
+            this.optionsToolStripMenuItem1.Name = "optionsToolStripMenuItem1";
+            this.optionsToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.optionsToolStripMenuItem1.Text = "Options";
+            this.optionsToolStripMenuItem1.Click += new System.EventHandler(this.optionsToolStripMenuItem1_Click);
             // 
             // Form1
             // 
@@ -495,6 +505,7 @@
         private System.Windows.Forms.ToolStripMenuItem runToToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem1;
     }
 }
 
