@@ -23,8 +23,9 @@ namespace Portfolio1
             InitializeComponent();
 
             timer.Interval = 20;
-            timer.Enabled = true;
+            timer.Enabled = false;
             timer.Tick += Timer_Tick;
+            toolStripStatusLabel1.Text = "Generations: 0";
 
         }
 
@@ -33,6 +34,46 @@ namespace Portfolio1
             generations++;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             gPanel1.Invalidate();
+        }
+        private void Timer_Tic(object sender, PaintEventArgs e)
+        {
+            Brush cBrush = new SolidBrush(cColor);
+            int cout = 0;
+
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+
+                    if (universe[x - 1, y - 1] == true)
+                    {
+                        cout++;
+                    }
+                    if (universe[x - 1, y] == true)
+                    {
+                        cout++;
+                    }
+                    if (universe[x - 1, y + 1] == true)
+                    {
+                        cout++;
+                    }
+                    if (universe[x, y - 1] == true)
+                    {
+                        cout++;
+                    }
+                    if (universe[x + 1, y - 1] == true)
+                    {
+                        cout++;
+                    }
+                    if (universe[x - 1, y - 1] == true)
+                    {
+                        cout++;
+                    }
+                    gPanel1.Invalidate();
+                }
+            }
+
         }
 
         private void gPanel1_Paint(object sender, PaintEventArgs e)
@@ -59,6 +100,7 @@ namespace Portfolio1
                         e.Graphics.FillRectangle(cBrush, rect);
                     }
 
+
                     e.Graphics.DrawRectangle(gPen, rect.X, rect.Y, rect.Width, rect.Height);
                 }
             }
@@ -77,7 +119,7 @@ namespace Portfolio1
                 int y = e.Y / high;
 
                 universe[x, y] = !universe[x, y];
-
+                
                 gPanel1.Invalidate();
             }
         }
@@ -85,6 +127,43 @@ namespace Portfolio1
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+
+        }
+
+    
+
+        private void PauseButton_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
+
+        }
+
+        private void StepButton1_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+            timer.Tick += Timer_Tick;
+            timer.Enabled = false;
+        }
+
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = gPanel1.BackColor;
+
+            if(DialogResult.OK == dlg.ShowDialog())
+            {
+               gPanel1.BackColor = dlg.Color;
+            }
         }
     }
 }
