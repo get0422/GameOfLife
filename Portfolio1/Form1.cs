@@ -74,12 +74,43 @@ namespace Portfolio1
         {
             int cout = 0;
 
-            if(x < 24)
-            {
+            if(x < 24){
                 if (universe[x + 1, y] == true)
                     cout++;
             }
+            if (x < 24 && y < 24){
+                if (universe[x + 1, y + 1] == true)
+                    cout++;
+            }
+            if (y < 24){
+                if (universe[x, y + 1] == true)
+                    cout++;
+            }
+            if (y < 24 && x != 0){
+                if (universe[x - 1, y + 1] == true)
+                    cout++;
+            }
 
+            if (x != 0){
+                if (universe[x - 1, y] == true)
+                    cout++;
+            }
+            if (x != 0 && y != 0){
+                if (universe[x - 1, y - 1] == true)
+                    cout++;
+            }
+
+            if (y != 0){
+                if (universe[x, y - 1] == true)
+                    cout++;
+            }
+
+            if (x < 24 && y != 0){
+                if (universe[x + 1, y - 1] == true)
+                    cout++;
+            }
+
+            return cout;
 
         }
         private void gPanel1_Paint(object sender, PaintEventArgs e)
@@ -141,15 +172,11 @@ namespace Portfolio1
         private void PlayButton_Click(object sender, EventArgs e)
         {
             timer.Enabled = true;
-
         }
-
-    
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
             timer.Enabled = false;
-
         }
 
         private void StepButton1_Click(object sender, EventArgs e)
