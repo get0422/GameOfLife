@@ -32,11 +32,12 @@ namespace Portfolio1
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            NextGen();
             generations++;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             gPanel1.Invalidate();
         }
-        private void NextGen(object sender, PaintEventArgs e)
+        private void NextGen()
         {
             generations++;
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -72,6 +73,12 @@ namespace Portfolio1
         private int NeighborCount(int x, int y)
         {
             int cout = 0;
+
+            if(x < 24)
+            {
+                if (universe[x + 1, y] == true)
+                    cout++;
+            }
 
 
         }
@@ -147,9 +154,9 @@ namespace Portfolio1
 
         private void StepButton1_Click(object sender, EventArgs e)
         {
-            timer.Enabled = true;
-            timer.Tick += Timer_Tick;
-            timer.Enabled = false;
+            NextGen();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            gPanel1.Invalidate();
         }
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
