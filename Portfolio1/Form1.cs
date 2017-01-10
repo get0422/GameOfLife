@@ -35,7 +35,7 @@ namespace Portfolio1
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             gPanel1.Invalidate();
         }
-        private void Timer_Tic(object sender, PaintEventArgs e)
+        private void NextGen(object sender, PaintEventArgs e)
         {
             Brush cBrush = new SolidBrush(cColor);
             int cout = 0;
@@ -78,8 +78,8 @@ namespace Portfolio1
 
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
-            int wid = gPanel1.ClientSize.Width / universe.GetLength(0);
-            int high = gPanel1.ClientSize.Height / universe.GetLength(1);
+            float wid = (float)gPanel1.ClientSize.Width / (float)universe.GetLength(0);
+            float high = (float)gPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
             Pen gPen = new Pen(gColor, 1);
             Brush cBrush = new SolidBrush(cColor);
@@ -89,7 +89,7 @@ namespace Portfolio1
 
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    Rectangle rect = Rectangle.Empty;
+                    RectangleF rect = RectangleF.Empty;
                     rect.X = x * wid;
                     rect.Y = y * high;
                     rect.Width = wid;
@@ -169,9 +169,10 @@ namespace Portfolio1
         private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             DialogBox dlg = new DialogBox();
+            
             if (DialogResult.OK == dlg.ShowDialog())
             {
-
+                
             }
 
         }

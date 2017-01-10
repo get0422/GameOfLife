@@ -16,10 +16,16 @@ namespace Portfolio1
         {
             InitializeComponent();
         }
-
-        private void DialogBox_Load(object sender, EventArgs e)
-        {
-
-        }
+        //public string FormTitle
+        //{
+        //    get
+        //    {
+        //        return numericUpDown1.Value;
+        //    }
+        //    set
+        //    {
+        //        numericUpDown1.Value = value;
+        //    }
+        //}
     }
 }
