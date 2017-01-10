@@ -33,7 +33,6 @@ namespace Portfolio1
         private void Timer_Tick(object sender, EventArgs e)
         {
             NextGen();
-            generations++;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             gPanel1.Invalidate();
         }
@@ -44,17 +43,13 @@ namespace Portfolio1
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    if (universe[x,y] == true && NeighborCount(x,y) < 2)
+                    if (universe[x,y] == true && NeighborCount(x,y) < 2 || NeighborCount(x, y) > 3)
                     {
                         scratchPad[x, y] = false;
                     }
                     else if (universe[x, y] == true && NeighborCount(x, y) == 2 ||  NeighborCount(x, y) == 3)
                     {
                         scratchPad[x, y] = true;
-                    }
-                    else if (universe[x, y] == true && NeighborCount(x, y) > 3)
-                    {
-                        scratchPad[x, y] = false;
                     }
                     else if (universe[x, y] == false && NeighborCount(x, y) == 3)
                     {
@@ -74,19 +69,19 @@ namespace Portfolio1
         {
             int cout = 0;
 
-            if(x < 30){
+            if(x < 29){
                 if (universe[x + 1, y] == true)
                     cout++;
             }
-            if (x < 30 && y < 30){
+            if (x < 29 && y < 29){
                 if (universe[x + 1, y + 1] == true)
                     cout++;
             }
-            if (y < 30){
+            if (y < 29){
                 if (universe[x, y + 1] == true)
                     cout++;
             }
-            if (y < 30 && x != 0){
+            if (y < 29 && x != 0){
                 if (universe[x - 1, y + 1] == true)
                     cout++;
             }
@@ -98,13 +93,12 @@ namespace Portfolio1
                 if (universe[x - 1, y - 1] == true)
                     cout++;
             }
-
             if (y != 0){
                 if (universe[x, y - 1] == true)
                     cout++;
             }
 
-            if (x < 30 && y != 0){
+            if (x < 29 && y != 0){
                 if (universe[x + 1, y - 1] == true)
                     cout++;
             }
@@ -230,5 +224,53 @@ namespace Portfolio1
             }
         }
 
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            timer.Stop();
+            generations = 0;
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    universe[x, y] = false;
+                }
+            }
+            gPanel1.Invalidate();
+        }
+
+        private void nextToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            NextGen();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            gPanel1.Invalidate();
+        }
+
+        private void nextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NextGen();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            gPanel1.Invalidate();
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+        }
+
+        private void startToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+        }
+
+        private void pauseToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
+        }
+
+        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
+        }
     }
 }
