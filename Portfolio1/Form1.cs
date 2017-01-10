@@ -48,15 +48,15 @@ namespace Portfolio1
                     {
                         scratchPad[x, y] = false;
                     }
-                    if (universe[x, y] == true && NeighborCount(x, y) < 2 ||  NeighborCount(x, y) == 3)
+                    else if (universe[x, y] == true && NeighborCount(x, y) == 2 ||  NeighborCount(x, y) == 3)
                     {
                         scratchPad[x, y] = true;
                     }
-                    if (universe[x, y] == true && NeighborCount(x, y) > 3)
+                    else if (universe[x, y] == true && NeighborCount(x, y) > 3)
                     {
                         scratchPad[x, y] = false;
                     }
-                    if (universe[x, y] == false && NeighborCount(x, y) == 3)
+                    else if (universe[x, y] == false && NeighborCount(x, y) == 3)
                     {
                         scratchPad[x, y] = true;
                     }
@@ -74,23 +74,22 @@ namespace Portfolio1
         {
             int cout = 0;
 
-            if(x < 24){
+            if(x < 30){
                 if (universe[x + 1, y] == true)
                     cout++;
             }
-            if (x < 24 && y < 24){
+            if (x < 30 && y < 30){
                 if (universe[x + 1, y + 1] == true)
                     cout++;
             }
-            if (y < 24){
+            if (y < 30){
                 if (universe[x, y + 1] == true)
                     cout++;
             }
-            if (y < 24 && x != 0){
+            if (y < 30 && x != 0){
                 if (universe[x - 1, y + 1] == true)
                     cout++;
             }
-
             if (x != 0){
                 if (universe[x - 1, y] == true)
                     cout++;
@@ -105,7 +104,7 @@ namespace Portfolio1
                     cout++;
             }
 
-            if (x < 24 && y != 0){
+            if (x < 30 && y != 0){
                 if (universe[x + 1, y - 1] == true)
                     cout++;
             }
@@ -161,7 +160,17 @@ namespace Portfolio1
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            timer.Stop();
+            generations = 0;
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    universe[x, y] = false;
+                }
+            }
+            gPanel1.Invalidate();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -185,6 +194,20 @@ namespace Portfolio1
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             gPanel1.Invalidate();
         }
+        private void newToolStripButton_Click(object sender, EventArgs e)
+        {
+            timer.Stop();
+            generations = 0;
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    universe[x, y] = false;
+                }
+            }
+            gPanel1.Invalidate();
+        }
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -206,5 +229,6 @@ namespace Portfolio1
 
             }
         }
+
     }
 }
