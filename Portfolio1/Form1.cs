@@ -12,7 +12,8 @@ namespace Portfolio1
 {
     public partial class Form1 : Form
     {
-        bool[,] universe = new bool[12, 6];
+        bool[,] universe = new bool[30, 30];
+        bool[,] scratchPad = new bool[30, 30];
         Color gColor = Color.Black;
         Color cColor = Color.Orange;
         Timer timer = new Timer();
@@ -37,45 +38,43 @@ namespace Portfolio1
         }
         private void NextGen(object sender, PaintEventArgs e)
         {
-            Brush cBrush = new SolidBrush(cColor);
-            int cout = 0;
-
+            generations++;
             for (int y = 0; y < universe.GetLength(1); y++)
             {
-
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-
-                    if (universe[x - 1, y - 1] == true)
+                    if (universe[x,y] == true && NeighborCount(x,y) < 2)
                     {
-                        cout++;
+                        scratchPad[x, y] = false;
                     }
-                    if (universe[x - 1, y] == true)
+                    if (universe[x, y] == true && NeighborCount(x, y) < 2 ||  NeighborCount(x, y) == 3)
                     {
-                        cout++;
+                        scratchPad[x, y] = true;
                     }
-                    if (universe[x - 1, y + 1] == true)
+                    if (universe[x, y] == true && NeighborCount(x, y) > 3)
                     {
-                        cout++;
+                        scratchPad[x, y] = false;
                     }
-                    if (universe[x, y - 1] == true)
+                    if (universe[x, y] == false && NeighborCount(x, y) == 3)
                     {
-                        cout++;
+                        scratchPad[x, y] = true;
                     }
-                    if (universe[x + 1, y - 1] == true)
+                    else
                     {
-                        cout++;
+                        scratchPad[x, y] = false;
                     }
-                    if (universe[x - 1, y - 1] == true)
-                    {
-                        cout++;
-                    }
-                    gPanel1.Invalidate();
                 }
             }
+            bool[,] temp = universe;
+            universe = scratchPad;
+            scratchPad = temp;
+        }
+        private int NeighborCount(int x, int y)
+        {
+            int cout = 0;
+
 
         }
-
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
             float wid = (float)gPanel1.ClientSize.Width / (float)universe.GetLength(0);
@@ -99,8 +98,6 @@ namespace Portfolio1
                     {
                         e.Graphics.FillRectangle(cBrush, rect);
                     }
-
-
                     e.Graphics.DrawRectangle(gPen, rect.X, rect.Y, rect.Width, rect.Height);
                 }
             }
@@ -112,13 +109,13 @@ namespace Portfolio1
         {
             if (e.Button == MouseButtons.Left)
             {
-                int wid = gPanel1.ClientSize.Width / universe.GetLength(0);
-                int high = gPanel1.ClientSize.Height / universe.GetLength(1);
+                float wid = gPanel1.ClientSize.Width / (float)universe.GetLength(0);
+                float high = gPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
-                int x = e.X / wid;
-                int y = e.Y / high;
+                float x = e.X / wid;
+                float y = e.Y / high;
 
-                universe[x, y] = !universe[x, y];
+                universe[(int)x, (int)y] = !universe[(int)x, (int)y];
                 
                 gPanel1.Invalidate();
             }
@@ -166,15 +163,14 @@ namespace Portfolio1
             }
         }
 
-        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogBox dlg = new DialogBox();
-            
+
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                
-            }
 
+            }
         }
     }
 }
