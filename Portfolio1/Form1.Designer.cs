@@ -76,6 +76,7 @@
             this.nextToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gPanel1 = new Portfolio1.GPanel();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -418,42 +419,43 @@
             this.startToolStripMenuItem1,
             this.pauseToolStripMenuItem1,
             this.nextToolStripMenuItem1,
+            this.toolStripSeparator3,
             this.colorToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(123, 134);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(182, 168);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(122, 26);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // startToolStripMenuItem1
             // 
             this.startToolStripMenuItem1.Name = "startToolStripMenuItem1";
-            this.startToolStripMenuItem1.Size = new System.Drawing.Size(122, 26);
+            this.startToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             this.startToolStripMenuItem1.Text = "Start";
             this.startToolStripMenuItem1.Click += new System.EventHandler(this.startToolStripMenuItem1_Click);
             // 
             // pauseToolStripMenuItem1
             // 
             this.pauseToolStripMenuItem1.Name = "pauseToolStripMenuItem1";
-            this.pauseToolStripMenuItem1.Size = new System.Drawing.Size(122, 26);
+            this.pauseToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             this.pauseToolStripMenuItem1.Text = "Pause";
             this.pauseToolStripMenuItem1.Click += new System.EventHandler(this.pauseToolStripMenuItem1_Click);
             // 
             // nextToolStripMenuItem1
             // 
             this.nextToolStripMenuItem1.Name = "nextToolStripMenuItem1";
-            this.nextToolStripMenuItem1.Size = new System.Drawing.Size(122, 26);
+            this.nextToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             this.nextToolStripMenuItem1.Text = "Next";
             this.nextToolStripMenuItem1.Click += new System.EventHandler(this.nextToolStripMenuItem1_Click);
             // 
             // colorToolStripMenuItem
             // 
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            this.colorToolStripMenuItem.Size = new System.Drawing.Size(122, 26);
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.colorToolStripMenuItem.Text = "Color";
             this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
             // 
@@ -468,6 +470,11 @@
             this.gPanel1.TabIndex = 3;
             this.gPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.gPanel1_Paint);
             this.gPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gPanel1_MouseClick);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(178, 6);
             // 
             // Form1
             // 
@@ -543,6 +550,7 @@
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem nextToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

@@ -33,6 +33,17 @@ namespace Portfolio1
                 button1.BackColor = dlg.Color;
             }
         }
+        public Color Backgr
+        {
+            get
+            {
+                return button1.BackColor;
+            }
+            set
+            {
+                button1.BackColor = value;
+            }
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -69,17 +80,38 @@ namespace Portfolio1
                 button4.BackColor = dlg.Color;
             }
         }
-        //public string FormTitle
-        //{
-        //    get
-        //    {
-        //        return numericUpDown1.Value;
-        //    }
-        //    set
-        //    {
-        //        numericUpDown1.Value = value;
-        //    }
-        //}
-
+        public decimal TimerInterval
+        {
+            get
+            {
+                return numericUpDown1.Value;
+            }
+            set
+            {
+                numericUpDown1.Value = value;
+            }
+        }
+        public decimal UniWidth
+        {
+            get
+            {
+                return numericUpDown2.Value;
+            }
+            set
+            {
+                numericUpDown2.Value = value;
+            }
+        }
+        public decimal UniHeight
+        {
+            get
+            {
+                return numericUpDown2.Value;
+            }
+            set
+            {
+                numericUpDown2.Value = value;
+            }
+        }
     }
 }

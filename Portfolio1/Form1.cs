@@ -223,10 +223,11 @@ namespace Portfolio1
             DialogBox dlg = new DialogBox();
 
             dlg.BackColor = this.toolStrip1.BackColor;
+            dlg.Backgr = gPanel1.BackColor;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                
+                gPanel1.BackColor = dlg.Backgr;
             }
         }
 
