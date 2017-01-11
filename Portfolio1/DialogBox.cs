@@ -12,9 +12,14 @@ namespace Portfolio1
 {
     public partial class DialogBox : Form
     {
+        private Form1 otherForm = new Form1();
+
         public DialogBox()
         {
             InitializeComponent();
+            button1.BackColor = otherForm.BackColor;
+            button2.BackColor = GPanel.DefaultForeColor;
+            
         }
 
         private void button1_Click(object sender, EventArgs e)

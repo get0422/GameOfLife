@@ -108,6 +108,7 @@ namespace Portfolio1
         }
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
+
             float wid = (float)gPanel1.ClientSize.Width / (float)universe.GetLength(0);
             float high = (float)gPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
@@ -119,6 +120,8 @@ namespace Portfolio1
 
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
+
+
                     RectangleF rect = RectangleF.Empty;
                     rect.X = x * wid;
                     rect.Y = y * high;
@@ -134,6 +137,7 @@ namespace Portfolio1
             }
             gPen.Dispose();
             cBrush.Dispose();
+
         }
 
         private void gPanel1_MouseClick(object sender, MouseEventArgs e)
@@ -218,9 +222,11 @@ namespace Portfolio1
         {
             DialogBox dlg = new DialogBox();
 
+            dlg.BackColor = this.toolStrip1.BackColor;
+
             if (DialogResult.OK == dlg.ShowDialog())
             {
-
+                
             }
         }
 
@@ -271,6 +277,19 @@ namespace Portfolio1
         private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             timer.Enabled = false;
+        }
+
+        private void runToToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RunTo dlg = new RunTo();
+
+            dlg.BackColor = this.toolStrip1.BackColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+
+            }
+
         }
     }
 }
