@@ -16,6 +16,7 @@ namespace Portfolio1
         bool[,] scratchPad = new bool[30, 30];
         Color gColor = Color.Black;
         Color cColor = Color.Orange;
+        Color dColor = Color.Beige;
         Timer timer = new Timer();
         int generations = 0;
 
@@ -108,11 +109,12 @@ namespace Portfolio1
         }
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
-
+            
             float wid = (float)gPanel1.ClientSize.Width / (float)universe.GetLength(0);
             float high = (float)gPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
             Pen gPen = new Pen(gColor, 1);
+            Pen dPen = new Pen(dColor, 2);
             Brush cBrush = new SolidBrush(cColor);
 
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -120,8 +122,6 @@ namespace Portfolio1
 
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-
-
                     RectangleF rect = RectangleF.Empty;
                     rect.X = x * wid;
                     rect.Y = y * high;
@@ -132,12 +132,29 @@ namespace Portfolio1
                     {
                         e.Graphics.FillRectangle(cBrush, rect);
                     }
+
                     e.Graphics.DrawRectangle(gPen, rect.X, rect.Y, rect.Width, rect.Height);
+                    if (x % 10 == 0) { e.Graphics.DrawLine(dPen, rect.X, x, rect.X, rect.Y* Width); }
+                    if (y % 10 == 0) { e.Graphics.DrawLine(dPen, y, rect.Y, rect.X * Height, rect.Y); }
+
+                    Font font = new Font("Arial", high / 2);
+                    
+                    StringFormat stringFormat = new StringFormat();
+                    stringFormat.Alignment = StringAlignment.Center;
+                    stringFormat.LineAlignment = StringAlignment.Center;
+                    
+                    int neighbors = NeighborCount(x,y);
+                    if (neighbors == 0) { }
+                    else if(neighbors == 3 || neighbors == 2)
+                    {
+                        e.Graphics.DrawString(neighbors.ToString(), font, Brushes.White, rect, stringFormat);
+                    }
+                    else
+                        e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, rect, stringFormat);
                 }
             }
             gPen.Dispose();
             cBrush.Dispose();
-
         }
 
         private void gPanel1_MouseClick(object sender, MouseEventArgs e)
@@ -221,12 +238,18 @@ namespace Portfolio1
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogBox dlg = new DialogBox();
+            RunTo run = new RunTo();
+            run.BackColor = this.toolStrip1.BackColor;
 
             dlg.BackColor = this.toolStrip1.BackColor;
             dlg.Backgr = gPanel1.BackColor;
+            dlg.Forgr = cColor;
+            dlg.Grid = gColor;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
+                gColor = dlg.Grid;
+                cColor = dlg.Forgr;
                 gPanel1.BackColor = dlg.Backgr;
             }
         }
@@ -290,6 +313,15 @@ namespace Portfolio1
             {
 
             }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
         }
     }
