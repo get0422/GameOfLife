@@ -24,23 +24,30 @@ namespace Portfolio1
         Color gColor = Color.Black;
         Color cColor = Color.Orange;
         Color dColor = Color.Beige;
+
+        Color gColorTemp = Color.Black;
+        Color cColorTemp = Color.Orange;
+        Color dColorTemp = Color.Beige;
+
+
+
+
         Timer timer = new Timer();
 
         public Form1()
         {
             InitializeComponent();
 
+            universe = new bool[mX, mY];
+            scratchPad = new bool[mX, mY];
             timer.Interval = timeInt;
             timer.Enabled = false;
             timer.Tick += Timer_Tick;
             toolStripStatusLabel1.Text = "Generations: 0";
-
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            universe = new bool[mX, mY];
-            scratchPad = new bool[mX, mY];
             NextGen();
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             gPanel1.Invalidate();
@@ -86,11 +93,11 @@ namespace Portfolio1
                 if (universe[x + 1, y + 1] == true)
                     cout++;
             }
-            if (y < 29){
+            if (y < (mY - 1)){
                 if (universe[x, y + 1] == true)
                     cout++;
             }
-            if (y < 29 && x != 0){
+            if (y < (mY - 1) && x != 0){
                 if (universe[x - 1, y + 1] == true)
                     cout++;
             }
@@ -107,7 +114,7 @@ namespace Portfolio1
                     cout++;
             }
 
-            if (x < 29 && y != 0){
+            if (x < (mX - 1) && y != 0){
                 if (universe[x + 1, y - 1] == true)
                     cout++;
             }
@@ -119,6 +126,8 @@ namespace Portfolio1
         {
             if (generations != runtogen){ }
             else { timer.Enabled = false; runtogen = -1; }
+
+            if (gColor != Color.Transparent) { gridVisableToolStripMenuItem.Checked = true; }
 
             float wid = (float)gPanel1.ClientSize.Width / (float)universe.GetLength(0);
             float high = (float)gPanel1.ClientSize.Height / (float)universe.GetLength(1);
@@ -258,6 +267,8 @@ namespace Portfolio1
             dlg.Grid = gColor;
             dlg.Gridx10 = dColor;
             dlg.TimerInterval = timeInt;
+            dlg.UniHeight = mY;
+            dlg.UniWidth = mX;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
@@ -266,8 +277,11 @@ namespace Portfolio1
                 cColor = dlg.Forgr;
                 gPanel1.BackColor = dlg.Backgr;
                 timeInt = (int)dlg.TimerInterval;
+                mX = (int)dlg.UniWidth;
+                mY = (int)dlg.UniHeight;
 
-
+                universe = new bool[mX, mY];
+                scratchPad = new bool[mX, mY];
                 gPanel1.Invalidate();
             }
         }
@@ -437,6 +451,25 @@ namespace Portfolio1
 
                 // Close the file.
                 reader.Close();
+            }
+        }
+
+        private void gridVisableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gridVisableToolStripMenuItem.Checked == true)
+            {
+                gridVisableToolStripMenuItem.Checked = false;
+                gColorTemp = gColor;
+                gColor = Color.Transparent;
+                dColorTemp = dColor;
+                dColor = Color.Transparent;
+                gPanel1.Invalidate();
+            }
+            else {
+                gridVisableToolStripMenuItem.Checked = true;
+                gColor = gColorTemp;
+                dColor = dColorTemp;
+                gPanel1.Invalidate();
             }
         }
     }

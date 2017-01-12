@@ -97,8 +97,8 @@ namespace Portfolio1
         }
         public decimal UniWidth
         {
-            get{ return numericUpDown2.Value; }
-            set{ numericUpDown2.Value = value; }
+            get{ return numericUpDown3.Value; }
+            set{ numericUpDown3.Value = value; }
         }
         public int UniHeight
         {
