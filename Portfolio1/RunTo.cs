@@ -16,5 +16,10 @@ namespace Portfolio1
         {
             InitializeComponent();
         }
+        public decimal Run
+        {
+            get { return numericUpDown1.Value; }
+            set { numericUpDown1.Value = 0; }
+        }
     }
 }

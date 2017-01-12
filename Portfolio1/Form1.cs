@@ -7,24 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Portfolio1
 {
     public partial class Form1 : Form
     {
-        bool[,] universe = new bool[30, 30];
-        bool[,] scratchPad = new bool[30, 30];
+        int generations = 0;
+        int runtogen = -1;
+        int timeInt = 20;
+        int mX = 30;
+        int mY = 30;
+
+        bool[,] universe;
+        bool[,] scratchPad;
         Color gColor = Color.Black;
         Color cColor = Color.Orange;
         Color dColor = Color.Beige;
         Timer timer = new Timer();
-        int generations = 0;
 
         public Form1()
         {
             InitializeComponent();
 
-            timer.Interval = 20;
+            timer.Interval = timeInt;
             timer.Enabled = false;
             timer.Tick += Timer_Tick;
             toolStripStatusLabel1.Text = "Generations: 0";
@@ -33,6 +39,8 @@ namespace Portfolio1
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            universe = new bool[mX, mY];
+            scratchPad = new bool[mX, mY];
             NextGen();
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             gPanel1.Invalidate();
@@ -70,11 +78,11 @@ namespace Portfolio1
         {
             int cout = 0;
 
-            if(x < 29){
+            if(x < (mX - 1)){
                 if (universe[x + 1, y] == true)
                     cout++;
             }
-            if (x < 29 && y < 29){
+            if (x < (mX - 1) && y < (mY - 1)){
                 if (universe[x + 1, y + 1] == true)
                     cout++;
             }
@@ -109,7 +117,9 @@ namespace Portfolio1
         }
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
-            
+            if (generations != runtogen){ }
+            else { timer.Enabled = false; runtogen = -1; }
+
             float wid = (float)gPanel1.ClientSize.Width / (float)universe.GetLength(0);
             float high = (float)gPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
@@ -213,6 +223,7 @@ namespace Portfolio1
         {
             timer.Stop();
             generations = 0;
+            runtogen = -1;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             for (int y = 0; y < universe.GetLength(1); y++)
             {
@@ -245,12 +256,19 @@ namespace Portfolio1
             dlg.Backgr = gPanel1.BackColor;
             dlg.Forgr = cColor;
             dlg.Grid = gColor;
+            dlg.Gridx10 = dColor;
+            dlg.TimerInterval = timeInt;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
                 gColor = dlg.Grid;
+                dColor = dlg.Gridx10;
                 cColor = dlg.Forgr;
                 gPanel1.BackColor = dlg.Backgr;
+                timeInt = (int)dlg.TimerInterval;
+
+
+                gPanel1.Invalidate();
             }
         }
 
@@ -258,6 +276,7 @@ namespace Portfolio1
         {
             timer.Stop();
             generations = 0;
+            runtogen = -1;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
             for (int y = 0; y < universe.GetLength(1); y++)
             {
@@ -308,21 +327,117 @@ namespace Portfolio1
             RunTo dlg = new RunTo();
 
             dlg.BackColor = this.toolStrip1.BackColor;
+            dlg.Run = runtogen;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
-
+                runtogen = (int)dlg.Run;
             }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2; dlg.DefaultExt = "cells";
 
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamWriter writer = new StreamWriter(dlg.FileName);
+
+                // Write any comments you want to include first.
+                // Prefix all comment strings with an exclamation point.
+                // Use WriteLine to write the strings to the file. 
+                // It appends a CRLF for you.
+                writer.WriteLine("!This is my comment.");
+
+                // Iterate through the universe one row at a time.
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    // Create a string to represent the current row.
+                    String currentRow = string.Empty;
+
+                    // Iterate through the current row one cell at a time.
+                    for (int x = 0; x < universe.GetLength(0); x++)
+                    {
+                        // If the universe[x,y] is alive then append 'O' (capital O)
+                        // to the row string.
+
+                        // Else if the universe[x,y] is dead then append '.' (period)
+                        // to the row string.
+                    }
+
+                    // Once the current row has been read through and the 
+                    // string constructed then write it to the file using WriteLine.
+                }
+
+                // After all rows and columns have been written then close the file.
+                writer.Close();
+            }
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2;
 
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(dlg.FileName);
+
+                // Create a couple variables to calculate the width and height
+                // of the data in the file.
+                int maxWidth = 0;
+                int maxHeight = 0;
+
+                // Iterate through the file once to get its size.
+                while (!reader.EndOfStream)
+                {
+                    // Read one row at a time.
+                    string row = reader.ReadLine();
+
+                    // If the row begins with '!' then it is a comment
+                    // and should be ignored.
+
+                    // If the row is not a comment then it is a row of cells.
+                    // Increment the maxHeight variable for each row read.
+
+                    // Get the length of the current row string
+                    // and adjust the maxWidth variable if necessary.
+                }
+
+                // Resize the current universe and scratchPad
+                // to the width and height of the file calculated above.
+
+                // Reset the file pointer back to the beginning of the file.
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+                // Iterate through the file again, this time reading in the cells.
+                while (!reader.EndOfStream)
+                {
+                    // Read one row at a time.
+                    string row = reader.ReadLine();
+
+                    // If the row begins with '!' then
+                    // it is a comment and should be ignored.
+
+                    // If the row is not a comment then 
+                    // it is a row of cells and needs to be iterated through.
+                    for (int xPos = 0; xPos < row.Length; xPos++)
+                    {
+                        // If row[xPos] is a 'O' (capital O) then
+                        // set the corresponding cell in the universe to alive.
+
+                        // If row[xPos] is a '.' (period) then
+                        // set the corresponding cell in the universe to dead.
+                    }
+                }
+
+                // Close the file.
+                reader.Close();
+            }
         }
     }
 }

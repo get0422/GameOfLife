@@ -100,9 +100,9 @@ namespace Portfolio1
             get{ return numericUpDown2.Value; }
             set{ numericUpDown2.Value = value; }
         }
-        public decimal UniHeight
+        public int UniHeight
         {
-            get{ return numericUpDown2.Value; }
+            get{ return (int)numericUpDown2.Value; }
             set{ numericUpDown2.Value = value; }
         }
     }
