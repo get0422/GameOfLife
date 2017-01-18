@@ -18,10 +18,11 @@ namespace Portfolio1
         int timeInt = 20;
         int mX = 30;
         int mY = 30;
+        int cells = 0;
 
         bool[,] universe;
         bool[,] scratchPad;
-        Color gColor = Color.Black;
+        Color gColor = Color.Blue;
         Color cColor = Color.Orange;
         Color dColor = Color.Beige;
 
@@ -38,18 +39,22 @@ namespace Portfolio1
         {
             InitializeComponent();
 
+            gColor = Properties.Settings.Default.GridColor;
+            dColor = Properties.Settings.Default.GridColorx10;
+            gPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            cColor = Properties.Settings.Default.CellColor;
+
             universe = new bool[mX, mY];
             scratchPad = new bool[mX, mY];
-            timer.Interval = timeInt;
             timer.Enabled = false;
             timer.Tick += Timer_Tick;
-            toolStripStatusLabel1.Text = "Generations: 0";
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
             gPanel1.Invalidate();
         }
         private void NextGen()
@@ -124,6 +129,9 @@ namespace Portfolio1
         }
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
+            timer.Interval = timeInt;
+            CellCount();
+
             if (generations != runtogen){ }
             else { timer.Enabled = false; runtogen = -1; }
 
@@ -135,10 +143,10 @@ namespace Portfolio1
             Pen gPen = new Pen(gColor, 1);
             Pen dPen = new Pen(dColor, 2);
             Brush cBrush = new SolidBrush(cColor);
+            Font hubF = new Font("Arial", 12);
 
             for (int y = 0; y < universe.GetLength(1); y++)
             {
-
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     RectangleF rect = RectangleF.Empty;
@@ -153,29 +161,49 @@ namespace Portfolio1
                     }
 
                     e.Graphics.DrawRectangle(gPen, rect.X, rect.Y, rect.Width, rect.Height);
-                    if (x % 10 == 0) { e.Graphics.DrawLine(dPen, rect.X, x, rect.X, rect.Y* Width); }
+                    if (x % 10 == 0) { e.Graphics.DrawLine(dPen, rect.X, x, rect.X, rect.Y * Width); }
                     if (y % 10 == 0) { e.Graphics.DrawLine(dPen, y, rect.Y, rect.X * Height, rect.Y); }
 
-                    Font font = new Font("Arial", high / 2);
-                    
-                    StringFormat stringFormat = new StringFormat();
-                    stringFormat.Alignment = StringAlignment.Center;
-                    stringFormat.LineAlignment = StringAlignment.Center;
-                    
-                    int neighbors = NeighborCount(x,y);
-                    if (neighbors == 0) { }
-                    else if(neighbors == 3 || neighbors == 2)
+                    if (neighborCountVisableToolStripMenuItem.Checked == true)
                     {
-                        e.Graphics.DrawString(neighbors.ToString(), font, Brushes.White, rect, stringFormat);
+                        Font font = new Font("Arial", high / 2);
+
+                        StringFormat stringFormat = new StringFormat();
+                        stringFormat.Alignment = StringAlignment.Center;
+                        stringFormat.LineAlignment = StringAlignment.Center;
+
+                        int neighbors = NeighborCount(x, y);
+                        if (neighbors == 0) { }
+                        else if (neighbors == 3 || neighbors == 2)
+                        {
+                            e.Graphics.DrawString(neighbors.ToString(), font, Brushes.White, rect, stringFormat);
+                        }
+                        else
+                            e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Magenta, rect, stringFormat);
                     }
-                    else
-                        e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, rect, stringFormat);
                 }
             }
+
+            e.Graphics.DrawString("Generations: " + generations.ToString(), hubF, Brushes.White, 0, gPanel1.Height - 80);
+            e.Graphics.DrawString("Cells: " + cells.ToString(), hubF, Brushes.White, 0, gPanel1.Height - 60);
+            e.Graphics.DrawString("Boundry Type: " + "Finite", hubF, Brushes.White, 0, gPanel1.Height - 40);
+            e.Graphics.DrawString("Universe Size: { Width = " + mX.ToString() + " Height = " + mY.ToString() +"}", hubF, Brushes.White, 0, gPanel1.Height - 20);
+
+            dPen.Dispose();
             gPen.Dispose();
             cBrush.Dispose();
         }
-
+        private void CellCount()
+        {
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (universe[x,y] == true)
+                        cells++;
+                }
+            }
+        }
         private void gPanel1_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -196,7 +224,9 @@ namespace Portfolio1
         {
             timer.Stop();
             generations = 0;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            runtogen = -1;
+            cells = 0;
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -225,7 +255,7 @@ namespace Portfolio1
         private void StepButton1_Click(object sender, EventArgs e)
         {
             NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
             gPanel1.Invalidate();
         }
         private void newToolStripButton_Click(object sender, EventArgs e)
@@ -233,7 +263,8 @@ namespace Portfolio1
             timer.Stop();
             generations = 0;
             runtogen = -1;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            cells = 0;
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -244,16 +275,6 @@ namespace Portfolio1
             gPanel1.Invalidate();
         }
 
-        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ColorDialog dlg = new ColorDialog();
-            dlg.Color = gPanel1.BackColor;
-
-            if(DialogResult.OK == dlg.ShowDialog())
-            {
-               gPanel1.BackColor = dlg.Color;
-            }
-        }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -267,21 +288,52 @@ namespace Portfolio1
             dlg.Grid = gColor;
             dlg.Gridx10 = dColor;
             dlg.TimerInterval = timeInt;
-            dlg.UniHeight = mY;
+            dlg.UniHeight = mY;  
             dlg.UniWidth = mX;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
+                int oldUniverseY = universe.GetLength(1);
+                int oldUniverseX = universe.GetLength(0);
+
                 gColor = dlg.Grid;
                 dColor = dlg.Gridx10;
                 cColor = dlg.Forgr;
                 gPanel1.BackColor = dlg.Backgr;
                 timeInt = (int)dlg.TimerInterval;
+
+                bool[,] temp = new bool[(int)dlg.UniWidth, (int)dlg.UniHeight];
+                
+
+                if (dlg.UniHeight < oldUniverseY)
+                    oldUniverseY = (int)dlg.UniHeight;
+                if (dlg.UniWidth < oldUniverseX)
+                    oldUniverseX = (int)dlg.UniWidth;
+
+                for (int y = 0; y < oldUniverseY; y++)
+                {
+                    for (int x = 0; x < oldUniverseX; x++)
+                    {
+                        temp[x, y] = universe[x,y];
+                    }
+                }
+
                 mX = (int)dlg.UniWidth;
                 mY = (int)dlg.UniHeight;
 
-                universe = new bool[mX, mY];
-                scratchPad = new bool[mX, mY];
+                universe = new bool[(int)dlg.UniWidth, (int)dlg.UniHeight];
+                scratchPad = new bool[(int)dlg.UniWidth, (int)dlg.UniHeight];
+
+                for (int y = 0; y < (int)dlg.UniHeight; y++)
+                {
+                    for (int x = 0; x < (int)dlg.UniWidth; x++)
+                    {
+                        universe[x, y] = temp[x, y];
+                        scratchPad[x, y] = temp[x, y];
+                    }
+                }
+
+
                 gPanel1.Invalidate();
             }
         }
@@ -291,7 +343,8 @@ namespace Portfolio1
             timer.Stop();
             generations = 0;
             runtogen = -1;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            cells = 0;
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -305,14 +358,14 @@ namespace Portfolio1
         private void nextToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
             gPanel1.Invalidate();
         }
 
         private void nextToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
             gPanel1.Invalidate();
         }
 
@@ -456,9 +509,10 @@ namespace Portfolio1
 
         private void gridVisableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (gridVisableToolStripMenuItem.Checked == true)
+            if (gridVisableToolStripMenuItem.Checked == true || gridVisableToolStripMenuItem1.Checked == true)
             {
                 gridVisableToolStripMenuItem.Checked = false;
+                gridVisableToolStripMenuItem1.Checked = false;
                 gColorTemp = gColor;
                 gColor = Color.Transparent;
                 dColorTemp = dColor;
@@ -467,10 +521,56 @@ namespace Portfolio1
             }
             else {
                 gridVisableToolStripMenuItem.Checked = true;
+                gridVisableToolStripMenuItem1.Checked = true;
                 gColor = gColorTemp;
                 dColor = dColorTemp;
                 gPanel1.Invalidate();
             }
+        }
+
+        private void neighborCountVisableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (neighborCountVisableToolStripMenuItem.Checked == true || neighborCountVisableToolStripMenuItem1.Checked == true)
+            {
+                neighborCountVisableToolStripMenuItem.Checked = false;
+                neighborCountVisableToolStripMenuItem1.Checked = false;
+                gPanel1.Invalidate();
+            }
+            else
+            {
+                neighborCountVisableToolStripMenuItem.Checked = true;
+                neighborCountVisableToolStripMenuItem1.Checked = true;
+                gPanel1.Invalidate();
+            }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.PanelColor = gPanel1.BackColor;
+            Properties.Settings.Default.GridColor = gColor;
+            Properties.Settings.Default.GridColorx10 = dColor;
+            Properties.Settings.Default.CellColor = cColor;
+            Properties.Settings.Default.Save();
+        }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            gPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            gColor = Properties.Settings.Default.GridColor;
+            dColor = Properties.Settings.Default.GridColorx10;
+            cColor = Properties.Settings.Default.CellColor;
+
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reload();
+            gPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            gColor = Properties.Settings.Default.GridColor;
+            dColor = Properties.Settings.Default.GridColorx10;
+            cColor = Properties.Settings.Default.CellColor;
+
         }
     }
 }
