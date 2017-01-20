@@ -735,5 +735,24 @@ namespace Portfolio1
             }
 
         }
+
+        private void colorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Random colorRand = new Random();
+            Color randGridColor     = Color.FromArgb(colorRand.Next(256), colorRand.Next(256), colorRand.Next(256));
+            Color randGridx10Color  = Color.FromArgb(colorRand.Next(256), colorRand.Next(256), colorRand.Next(256));
+            Color randBackColor     = Color.FromArgb(colorRand.Next(256), colorRand.Next(256), colorRand.Next(256));
+            Color randCellColor     = Color.FromArgb(colorRand.Next(256), colorRand.Next(256), colorRand.Next(256));
+            Color randLiveCellColor = Color.FromArgb(colorRand.Next(256), colorRand.Next(256), colorRand.Next(256));
+            Color randDeadCellColor = Color.FromArgb(colorRand.Next(256), colorRand.Next(256), colorRand.Next(256));
+
+            gColor = randGridColor;
+            dColor = randGridx10Color;
+            cColor = randBackColor;
+            gPanel1.BackColor = randCellColor;
+            LiveCellColor = randLiveCellColor;
+            DeadCellColor = randDeadCellColor;
+
+        }
     }
 }
