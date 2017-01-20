@@ -19,6 +19,10 @@ namespace Portfolio1
         int mX = 30;
         int mY = 30;
         int cells = 0;
+        int seed = 4221;
+        int gridT;
+        int cT;
+        int random;
 
         bool[,] universe;
         bool[,] scratchPad;
@@ -30,8 +34,9 @@ namespace Portfolio1
         Color cColorTemp = Color.Orange;
         Color dColorTemp = Color.Beige;
 
-
-
+        Color LiveCellColor = Color.White;
+        Color DeadCellColor = Color.Magenta;
+        
 
         Timer timer = new Timer();
 
@@ -48,15 +53,34 @@ namespace Portfolio1
             scratchPad = new bool[mX, mY];
             timer.Enabled = false;
             timer.Tick += Timer_Tick;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+
+            if (cT == 0)
+            {
+                cT++;
+                gridT = 2;
+            }
+            else { };
+
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+            if (gridT == 1)
+            {
+
+            }
+            else if (gridT == 2)
+            {
+                NextGen();
+            }
+            else if (gridT == 3)
+            {
+
+            }
+            
             gPanel1.Invalidate();
         }
+
         private void NextGen()
         {
             generations++;
@@ -86,6 +110,7 @@ namespace Portfolio1
             universe = scratchPad;
             scratchPad = temp;
         }
+
         private int NeighborCount(int x, int y)
         {
             int cout = 0;
@@ -127,10 +152,11 @@ namespace Portfolio1
             return cout;
 
         }
+
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
             timer.Interval = timeInt;
-            CellCount();
+            cells = 0;
 
             if (generations != runtogen){ }
             else { timer.Enabled = false; runtogen = -1; }
@@ -143,21 +169,27 @@ namespace Portfolio1
             Pen gPen = new Pen(gColor, 1);
             Pen dPen = new Pen(dColor, 2);
             Brush cBrush = new SolidBrush(cColor);
+            Brush LiveCellBrush = new SolidBrush(LiveCellColor);
+            Brush DeadCellBrush = new SolidBrush(DeadCellColor);
             Font hubF = new Font("Arial", 12);
 
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
+
+
                     RectangleF rect = RectangleF.Empty;
                     rect.X = x * wid;
                     rect.Y = y * high;
                     rect.Width = wid;
                     rect.Height = high;
 
+
                     if (universe[x, y] == true)
                     {
                         e.Graphics.FillRectangle(cBrush, rect);
+                        cells++;
                     }
 
                     e.Graphics.DrawRectangle(gPen, rect.X, rect.Y, rect.Width, rect.Height);
@@ -176,34 +208,37 @@ namespace Portfolio1
                         if (neighbors == 0) { }
                         else if (neighbors == 3 || neighbors == 2)
                         {
-                            e.Graphics.DrawString(neighbors.ToString(), font, Brushes.White, rect, stringFormat);
+                            e.Graphics.DrawString(neighbors.ToString(), font, LiveCellBrush, rect, stringFormat);
                         }
                         else
-                            e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Magenta, rect, stringFormat);
+                            e.Graphics.DrawString(neighbors.ToString(), font, DeadCellBrush, rect, stringFormat);
                     }
                 }
             }
 
-            e.Graphics.DrawString("Generations: " + generations.ToString(), hubF, Brushes.White, 0, gPanel1.Height - 80);
-            e.Graphics.DrawString("Cells: " + cells.ToString(), hubF, Brushes.White, 0, gPanel1.Height - 60);
-            e.Graphics.DrawString("Boundry Type: " + "Finite", hubF, Brushes.White, 0, gPanel1.Height - 40);
-            e.Graphics.DrawString("Universe Size: { Width = " + mX.ToString() + " Height = " + mY.ToString() +"}", hubF, Brushes.White, 0, gPanel1.Height - 20);
+
+            if (headsUpVisableToolStripMenuItem.Checked == true || headsUpVisableToolStripMenuItem.Checked == true)
+            {
+                e.Graphics.DrawString("Generations: " + generations.ToString(), hubF, Brushes.White, 0, gPanel1.Height - 80);
+                e.Graphics.DrawString("Cells: " + cells.ToString(), hubF, Brushes.White, 0, gPanel1.Height - 60);
+
+                if (gridT == 1) { e.Graphics.DrawString("Boundry Type: " + "Toroidal", hubF, Brushes.White, 0, gPanel1.Height - 40); }
+                else if (gridT == 2) { e.Graphics.DrawString("Boundry Type: " + "Finite", hubF, Brushes.White, 0, gPanel1.Height - 40); }
+                else if (gridT == 3) { e.Graphics.DrawString("Boundry Type: " + "Infinite", hubF, Brushes.White, 0, gPanel1.Height - 40); }
+
+                e.Graphics.DrawString("Universe Size: { Width = " + mX.ToString() + " Height = " + mY.ToString() + "}", hubF, Brushes.White, 0, gPanel1.Height - 20);
+            }
+            else { }
+
+            if (gridT == 1) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Toroidal"; }
+            else if (gridT == 2) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed  + " Boundry Type: " + "Finite"; }
+            else if (gridT == 3) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Infinite"; }
 
             dPen.Dispose();
             gPen.Dispose();
             cBrush.Dispose();
         }
-        private void CellCount()
-        {
-            for (int y = 0; y < universe.GetLength(1); y++)
-            {
-                for (int x = 0; x < universe.GetLength(0); x++)
-                {
-                    if (universe[x,y] == true)
-                        cells++;
-                }
-            }
-        }
+
         private void gPanel1_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -226,7 +261,11 @@ namespace Portfolio1
             generations = 0;
             runtogen = -1;
             cells = 0;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+
+            if (gridT == 1) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Toroidal"; }
+            else if (gridT == 2) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Finite"; }
+            else if (gridT == 3) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Infinite"; }
+
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -254,8 +293,19 @@ namespace Portfolio1
 
         private void StepButton1_Click(object sender, EventArgs e)
         {
-            NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+            if (gridT == 1)
+            {
+
+            }
+            else if (gridT == 2)
+            {
+                NextGen();
+            }
+            else if (gridT == 3)
+            {
+
+            }
+
             gPanel1.Invalidate();
         }
         private void newToolStripButton_Click(object sender, EventArgs e)
@@ -264,7 +314,11 @@ namespace Portfolio1
             generations = 0;
             runtogen = -1;
             cells = 0;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+
+            if (gridT == 1) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Toroidal"; }
+            else if (gridT == 2) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Finite"; }
+            else if (gridT == 3) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Infinite"; }
+
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -274,7 +328,6 @@ namespace Portfolio1
             }
             gPanel1.Invalidate();
         }
-
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -290,6 +343,9 @@ namespace Portfolio1
             dlg.TimerInterval = timeInt;
             dlg.UniHeight = mY;  
             dlg.UniWidth = mX;
+            dlg.GridType = gridT;
+            dlg.LiveCell = LiveCellColor;
+            dlg.DeadCell = DeadCellColor;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
@@ -300,7 +356,10 @@ namespace Portfolio1
                 dColor = dlg.Gridx10;
                 cColor = dlg.Forgr;
                 gPanel1.BackColor = dlg.Backgr;
+                LiveCellColor = dlg.LiveCell;
+                DeadCellColor = dlg.DeadCell;
                 timeInt = (int)dlg.TimerInterval;
+                gridT = dlg.GridType;
 
                 bool[,] temp = new bool[(int)dlg.UniWidth, (int)dlg.UniHeight];
                 
@@ -332,8 +391,7 @@ namespace Portfolio1
                         scratchPad[x, y] = temp[x, y];
                     }
                 }
-
-
+                
                 gPanel1.Invalidate();
             }
         }
@@ -344,7 +402,11 @@ namespace Portfolio1
             generations = 0;
             runtogen = -1;
             cells = 0;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+
+            if (gridT == 1) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Toroidal"; }
+            else if (gridT == 2) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed  + " Boundry Type: " + "Finite"; }
+            else if (gridT == 3) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Infinite"; }
+
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -357,15 +419,35 @@ namespace Portfolio1
 
         private void nextToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+            if (gridT == 1)
+            {
+
+            }
+            else if (gridT == 2)
+            {
+                NextGen();
+            }
+            else if (gridT == 3)
+            {
+
+            }
             gPanel1.Invalidate();
         }
 
         private void nextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NextGen();
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString();
+            if (gridT == 1)
+            {
+
+            }
+            else if (gridT == 2)
+            {
+                NextGen();
+            }
+            else if (gridT == 3)
+            {
+
+            }
             gPanel1.Invalidate();
         }
 
@@ -399,6 +481,7 @@ namespace Portfolio1
             if (DialogResult.OK == dlg.ShowDialog())
             {
                 runtogen = (int)dlg.Run;
+                timer.Enabled = true;
             }
         }
 
@@ -570,6 +653,86 @@ namespace Portfolio1
             gColor = Properties.Settings.Default.GridColor;
             dColor = Properties.Settings.Default.GridColorx10;
             cColor = Properties.Settings.Default.CellColor;
+
+        }
+
+        private void headsUpVisableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (headsUpVisableToolStripMenuItem.Checked == true || headsUpVisableToolStripMenuItem1.Checked == true)
+            {
+                headsUpVisableToolStripMenuItem.Checked = false;
+                headsUpVisableToolStripMenuItem1.Checked = false;
+                gPanel1.Invalidate();
+            }
+            else
+            {
+                headsUpVisableToolStripMenuItem.Checked = true;
+                headsUpVisableToolStripMenuItem1.Checked = true;
+                gPanel1.Invalidate();
+            }
+        }
+
+        private void randomizeByTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Random rand = new Random();
+            float wid = (float)universe.GetLength(0);
+            float high = (float)universe.GetLength(1);
+
+            for (int i = 0; i < rand.Next(); i++)
+            {
+                float x = rand.Next((int)wid);
+                float y = rand.Next((int)high);
+
+                universe[(int)x, (int)y] = !universe[(int)x, (int)y];
+            }
+
+            gPanel1.Invalidate();
+        }
+
+        private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            float wid = (float)universe.GetLength(0);
+            float high = (float)universe.GetLength(1);
+
+            for (int i = 0; i < seed; i++)
+            {
+                float x = rand.Next((int)wid);
+                float y = rand.Next((int)high);
+
+                universe[(int)x, (int)y] = !universe[(int)x, (int)y];
+            }
+
+            gPanel1.Invalidate();
+        }
+
+        private void fromNewSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Seed dlg = new Seed();
+
+            dlg.BackColor = this.toolStrip1.BackColor;
+            dlg.NewSeed = seed;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                seed = (int)dlg.NewSeed;
+
+                Random rand = new Random();
+                float wid = (float)universe.GetLength(0);
+                float high = (float)universe.GetLength(1);
+
+                for (int i = 0; i < seed; i++)
+                {
+                    float x = rand.Next((int)wid);
+                    float y = rand.Next((int)high);
+
+                    universe[(int)x, (int)y] = !universe[(int)x, (int)y];
+                }
+
+                gPanel1.Invalidate();
+
+            }
 
         }
     }
