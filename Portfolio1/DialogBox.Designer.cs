@@ -340,7 +340,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(102, 35);
             this.label9.TabIndex = 10;
-            this.label9.Text = "Live Cell Number Color";
+            this.label9.Text = "Live Neighbor Cell Color";
             // 
             // button6
             // 
@@ -357,7 +357,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(102, 40);
             this.label10.TabIndex = 12;
-            this.label10.Text = "Dead Cell Number Color";
+            this.label10.Text = "Dead Cell Neighbor Color";
             // 
             // button7
             // 

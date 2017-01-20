@@ -14,5 +14,20 @@
     <Setting Name="CellColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Orange</Value>
     </Setting>
+    <Setting Name="LiveCellColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="DeadCellColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Magenta</Value>
+    </Setting>
+    <Setting Name="TimerInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="mXWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="mYHeight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

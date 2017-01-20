@@ -15,11 +15,11 @@ namespace Portfolio1
     {
         int generations = 0;
         int runtogen = -1;
+        int cells = 0;
+        int seed = 4221;
         int timeInt = 20;
         int mX = 30;
         int mY = 30;
-        int cells = 0;
-        int seed = 4221;
         int gridT;
         int cT;
         int random;
@@ -31,12 +31,11 @@ namespace Portfolio1
         Color dColor = Color.Beige;
 
         Color gColorTemp = Color.Black;
-        Color cColorTemp = Color.Orange;
         Color dColorTemp = Color.Beige;
 
         Color LiveCellColor = Color.White;
         Color DeadCellColor = Color.Magenta;
-        
+
 
         Timer timer = new Timer();
 
@@ -48,6 +47,11 @@ namespace Portfolio1
             dColor = Properties.Settings.Default.GridColorx10;
             gPanel1.BackColor = Properties.Settings.Default.PanelColor;
             cColor = Properties.Settings.Default.CellColor;
+            LiveCellColor = Properties.Settings.Default.LiveCellColor;
+            DeadCellColor = Properties.Settings.Default.DeadCellColor;
+            timeInt = Properties.Settings.Default.TimerInterval;
+            mX = Properties.Settings.Default.mXWidth;
+            mY = Properties.Settings.Default.mYHeight;
 
             universe = new bool[mX, mY];
             scratchPad = new bool[mX, mY];
@@ -633,6 +637,11 @@ namespace Portfolio1
             Properties.Settings.Default.GridColor = gColor;
             Properties.Settings.Default.GridColorx10 = dColor;
             Properties.Settings.Default.CellColor = cColor;
+            Properties.Settings.Default.LiveCellColor = LiveCellColor;
+            Properties.Settings.Default.DeadCellColor = DeadCellColor;
+            Properties.Settings.Default.TimerInterval = timeInt;
+            Properties.Settings.Default.mXWidth = mX;
+            Properties.Settings.Default.mYHeight = mY;
             Properties.Settings.Default.Save();
         }
 
@@ -643,7 +652,10 @@ namespace Portfolio1
             gColor = Properties.Settings.Default.GridColor;
             dColor = Properties.Settings.Default.GridColorx10;
             cColor = Properties.Settings.Default.CellColor;
+            LiveCellColor = Properties.Settings.Default.LiveCellColor;
+            DeadCellColor = Properties.Settings.Default.DeadCellColor;
 
+            gPanel1.Invalidate();
         }
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -653,7 +665,10 @@ namespace Portfolio1
             gColor = Properties.Settings.Default.GridColor;
             dColor = Properties.Settings.Default.GridColorx10;
             cColor = Properties.Settings.Default.CellColor;
+            LiveCellColor = Properties.Settings.Default.LiveCellColor;
+            DeadCellColor = Properties.Settings.Default.DeadCellColor;
 
+            gPanel1.Invalidate();
         }
 
         private void headsUpVisableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -753,6 +768,137 @@ namespace Portfolio1
             LiveCellColor = randLiveCellColor;
             DeadCellColor = randDeadCellColor;
 
+            gPanel1.Invalidate();
+        }
+
+        private void resetUniverseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reload();
+            timeInt = Properties.Settings.Default.TimerInterval;
+
+            int oldUniverseY = universe.GetLength(1);
+            int oldUniverseX = universe.GetLength(0);
+
+            bool[,] temp = new bool[mX, mY];
+
+
+            if (mY < oldUniverseY)
+                oldUniverseY = mY;
+            if (mX < oldUniverseX)
+                oldUniverseX = mX;
+
+            for (int y = 0; y < oldUniverseY; y++)
+            {
+                for (int x = 0; x < oldUniverseX; x++)
+                {
+                    temp[x, y] = universe[x, y];
+                }
+            }
+            
+            mX = 30;
+            mY = 30;
+
+            universe = new bool[mX, mY];
+            scratchPad = new bool[mX, mY];
+
+            for (int y = 0; y < mY; y++)
+            {
+                for (int x = 0; x < mX; x++)
+                {
+                    universe[x, y] = temp[x, y];
+                    scratchPad[x, y] = temp[x, y];
+                }
+            }
+
+            gPanel1.Invalidate();
+        }
+
+        private void reloadUniverseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            timeInt = Properties.Settings.Default.TimerInterval;
+
+
+            int oldUniverseY = Properties.Settings.Default.mXWidth;
+            int oldUniverseX = Properties.Settings.Default.mYHeight;
+
+            bool[,] temp = new bool[mX, mY];
+
+
+            if (mY < oldUniverseY)
+                oldUniverseY = mY;
+            if (mX < oldUniverseX)
+                oldUniverseX = mX;
+
+            for (int y = 0; y < oldUniverseY; y++)
+            {
+                for (int x = 0; x < oldUniverseX; x++)
+                {
+                    temp[x, y] = universe[x, y];
+                }
+            }
+
+            mX = Properties.Settings.Default.mXWidth;
+            mY = Properties.Settings.Default.mYHeight;
+
+            universe = new bool[mX, mY];
+            scratchPad = new bool[mX, mY];
+
+            for (int y = 0; y < mY; y++)
+            {
+                for (int x = 0; x < mX; x++)
+                {
+                    universe[x, y] = temp[x, y];
+                    scratchPad[x, y] = temp[x, y];
+                }
+            }
+
+            gPanel1.Invalidate();
+        }
+
+        private void randomizeToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+
+            timeInt = rand.Next(100);
+
+            int oldUniverseY = universe.GetLength(1);
+            int oldUniverseX = universe.GetLength(0);
+
+
+
+            mX = rand.Next(5, 100);
+            mY = rand.Next(5, 100);
+
+            bool[,] temp = new bool[mX, mY];
+
+
+            if (mY < oldUniverseY)
+                oldUniverseY = mY;
+            if (mX < oldUniverseX)
+                oldUniverseX = mX;
+
+            for (int y = 0; y < oldUniverseY; y++)
+            {
+                for (int x = 0; x < oldUniverseX; x++)
+                {
+                    temp[x, y] = universe[x, y];
+                }
+            }
+
+            universe = new bool[mX, mY];
+            scratchPad = new bool[mX, mY];
+
+            for (int y = 0; y < mY; y++)
+            {
+                for (int x = 0; x < mX; x++)
+                {
+                    universe[x, y] = temp[x, y];
+                    scratchPad[x, y] = temp[x, y];
+                }
+            }
+
+            gPanel1.Invalidate();
         }
     }
 }

@@ -70,5 +70,65 @@ namespace Portfolio1.Properties {
                 this["CellColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color LiveCellColor {
+            get {
+                return ((global::System.Drawing.Color)(this["LiveCellColor"]));
+            }
+            set {
+                this["LiveCellColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Magenta")]
+        public global::System.Drawing.Color DeadCellColor {
+            get {
+                return ((global::System.Drawing.Color)(this["DeadCellColor"]));
+            }
+            set {
+                this["DeadCellColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int TimerInterval {
+            get {
+                return ((int)(this["TimerInterval"]));
+            }
+            set {
+                this["TimerInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int mXWidth {
+            get {
+                return ((int)(this["mXWidth"]));
+            }
+            set {
+                this["mXWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int mYHeight {
+            get {
+                return ((int)(this["mYHeight"]));
+            }
+            set {
+                this["mYHeight"] = value;
+            }
+        }
     }
 }
