@@ -773,11 +773,14 @@ namespace Portfolio1
 
         private void resetUniverseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Reload();
+            Properties.Settings.Default.Reset();
             timeInt = Properties.Settings.Default.TimerInterval;
 
             int oldUniverseY = universe.GetLength(1);
             int oldUniverseX = universe.GetLength(0);
+
+            mX = Properties.Settings.Default.mXWidth;
+            mY = Properties.Settings.Default.mYHeight;
 
             bool[,] temp = new bool[mX, mY];
 
@@ -794,9 +797,6 @@ namespace Portfolio1
                     temp[x, y] = universe[x, y];
                 }
             }
-            
-            mX = 30;
-            mY = 30;
 
             universe = new bool[mX, mY];
             scratchPad = new bool[mX, mY];
@@ -815,12 +815,15 @@ namespace Portfolio1
 
         private void reloadUniverseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Reset();
+            Properties.Settings.Default.Reload();
             timeInt = Properties.Settings.Default.TimerInterval;
 
 
-            int oldUniverseY = Properties.Settings.Default.mXWidth;
-            int oldUniverseX = Properties.Settings.Default.mYHeight;
+            int oldUniverseY = universe.GetLength(1);
+            int oldUniverseX = universe.GetLength(0);
+
+            mX = Properties.Settings.Default.mXWidth;
+            mY = Properties.Settings.Default.mYHeight;
 
             bool[,] temp = new bool[mX, mY];
 
@@ -838,8 +841,6 @@ namespace Portfolio1
                 }
             }
 
-            mX = Properties.Settings.Default.mXWidth;
-            mY = Properties.Settings.Default.mYHeight;
 
             universe = new bool[mX, mY];
             scratchPad = new bool[mX, mY];
