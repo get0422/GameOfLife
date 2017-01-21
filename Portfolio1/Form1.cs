@@ -23,6 +23,7 @@ namespace Portfolio1
         int gridT = 0;
         int random;
 
+        bool[,] Playtemp;
         bool[,] universe;
         bool[,] scratchPad;
         Color gColor = Color.Blue;
@@ -55,6 +56,7 @@ namespace Portfolio1
 
             universe = new bool[mX, mY];
             scratchPad = new bool[mX, mY];
+            Playtemp = new bool[mX, mY];
             timer.Enabled = false;
             timer.Tick += Timer_Tick;
 
@@ -291,6 +293,19 @@ namespace Portfolio1
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
+            if (generations == 0)
+            {
+                Playtemp = new bool[mX, mY];
+
+                for (int y = 0; y < mY; y++)
+                {
+                    for (int x = 0; x < mX; x++)
+                    {
+                        Playtemp[x, y] = universe[x, y];
+                    }
+                }
+            }
+
             timer.Enabled = true;
         }
 
@@ -927,5 +942,41 @@ namespace Portfolio1
 
             gPanel1.Invalidate();
         }
+
+        private void Reset_Click(object sender, EventArgs e)
+        {
+            timer.Stop();
+            generations = 0;
+            runtogen = -1;
+            cells = 0;
+
+            if (gridT == 1) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Toroidal"; }
+            else if (gridT == 2) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Finite"; }
+            else if (gridT == 3) { toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + " Cells: " + cells.ToString() + " Seed: " + seed + " Boundry Type: " + "Infinite"; }
+
+            universe = new bool[mX, mY];
+            scratchPad = new bool[mX, mY];
+
+            for (int y = 0; y < mY; y++)
+            {
+                for (int x = 0; x < mX; x++)
+                {
+                    universe[x, y] = Playtemp[x, y];
+                    scratchPad[x, y] = Playtemp[x, y];
+                }
+            }
+            gPanel1.Invalidate();
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox dlg = new AboutBox();
+            dlg.BackColor = this.toolStrip1.BackColor;
+            dlg.Discription = this.toolStrip1.BackColor;
+            dlg.DiscriptionText = Color.White;
+            dlg.ShowDialog();
+        }
+
     }
 }

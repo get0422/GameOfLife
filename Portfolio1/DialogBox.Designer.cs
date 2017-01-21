@@ -40,6 +40,11 @@
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -54,11 +59,6 @@
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.button5 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
@@ -187,6 +187,50 @@
             this.tabPage2.Text = "View";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(370, 195);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(102, 40);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Dead Cell Neighbor Color";
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(287, 192);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(61, 40);
+            this.button7.TabIndex = 11;
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(370, 148);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(102, 35);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Live Neighbor Cell Color";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(287, 146);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(61, 40);
+            this.button6.TabIndex = 9;
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(383, 10);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(114, 45);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "Randomize Colors";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -295,6 +339,7 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
+            this.radioButton3.Enabled = false;
             this.radioButton3.Location = new System.Drawing.Point(7, 85);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(70, 21);
@@ -324,50 +369,6 @@
             this.radioButton1.Text = "Toroidal";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(383, 10);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(114, 45);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "Randomize Colors";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // label9
-            // 
-            this.label9.Location = new System.Drawing.Point(370, 148);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(102, 35);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "Live Neighbor Cell Color";
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(287, 146);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(61, 40);
-            this.button6.TabIndex = 9;
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // label10
-            // 
-            this.label10.Location = new System.Drawing.Point(370, 195);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(102, 40);
-            this.label10.TabIndex = 12;
-            this.label10.Text = "Dead Cell Neighbor Color";
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(287, 192);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(61, 40);
-            this.button7.TabIndex = 11;
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
             // DialogBox
             // 
             this.AcceptButton = this.OkayButton;
@@ -382,6 +383,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DialogBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
