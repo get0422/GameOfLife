@@ -20,8 +20,7 @@ namespace Portfolio1
         int timeInt = 20;
         int mX = 30;
         int mY = 30;
-        int gridT;
-        int cT;
+        int gridT = 0;
         int random;
 
         bool[,] universe;
@@ -52,21 +51,21 @@ namespace Portfolio1
             timeInt = Properties.Settings.Default.TimerInterval;
             mX = Properties.Settings.Default.mXWidth;
             mY = Properties.Settings.Default.mYHeight;
+            gridT = Properties.Settings.Default.BoundryT;
 
             universe = new bool[mX, mY];
             scratchPad = new bool[mX, mY];
             timer.Enabled = false;
             timer.Tick += Timer_Tick;
 
-            if (cT == 0)
+            if (gridT == 0)
             {
-                cT++;
                 gridT = 2;
             }
             else { };
 
         }
-
+        /////////////////////////////////////////////////////////////////////////////
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (gridT == 1)
@@ -75,7 +74,7 @@ namespace Portfolio1
             }
             else if (gridT == 2)
             {
-                NextGen();
+                FiniteNextGen();
             }
             else if (gridT == 3)
             {
@@ -84,8 +83,8 @@ namespace Portfolio1
             
             gPanel1.Invalidate();
         }
-
-        private void NextGen()
+        /////////////////////////////////////////////////////////////////////////////
+        private void FiniteNextGen()
         {
             generations++;
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -113,6 +112,11 @@ namespace Portfolio1
             bool[,] temp = universe;
             universe = scratchPad;
             scratchPad = temp;
+        }
+
+        public bool GetElement(int i, int j)
+        {
+            return universe[i % mX,j % mY];
         }
 
         private int NeighborCount(int x, int y)
@@ -294,7 +298,7 @@ namespace Portfolio1
         {
             timer.Enabled = false;
         }
-
+        ///////////////////////////////////////////////////////////////////////////////////////////
         private void StepButton1_Click(object sender, EventArgs e)
         {
             if (gridT == 1)
@@ -303,7 +307,7 @@ namespace Portfolio1
             }
             else if (gridT == 2)
             {
-                NextGen();
+                FiniteNextGen();
             }
             else if (gridT == 3)
             {
@@ -312,6 +316,7 @@ namespace Portfolio1
 
             gPanel1.Invalidate();
         }
+        ///////////////////////////////////////////////////////////////////////////////////////////
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
             timer.Stop();
@@ -420,7 +425,7 @@ namespace Portfolio1
             }
             gPanel1.Invalidate();
         }
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void nextToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (gridT == 1)
@@ -429,7 +434,7 @@ namespace Portfolio1
             }
             else if (gridT == 2)
             {
-                NextGen();
+                FiniteNextGen();
             }
             else if (gridT == 3)
             {
@@ -446,7 +451,7 @@ namespace Portfolio1
             }
             else if (gridT == 2)
             {
-                NextGen();
+                FiniteNextGen();
             }
             else if (gridT == 3)
             {
@@ -454,7 +459,7 @@ namespace Portfolio1
             }
             gPanel1.Invalidate();
         }
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             timer.Enabled = true;
@@ -504,7 +509,7 @@ namespace Portfolio1
                 // Prefix all comment strings with an exclamation point.
                 // Use WriteLine to write the strings to the file. 
                 // It appends a CRLF for you.
-                writer.WriteLine("!This is my comment.");
+                writer.WriteLine("!Name: " + dlg.FileName);
 
                 // Iterate through the universe one row at a time.
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -517,20 +522,28 @@ namespace Portfolio1
                     {
                         // If the universe[x,y] is alive then append 'O' (capital O)
                         // to the row string.
-
+                        if(universe[x,y] == true)
+                        {
+                            writer.Write('O');
+                        }
                         // Else if the universe[x,y] is dead then append '.' (period)
                         // to the row string.
+                        else if(universe[x,y] == false)
+                        {
+                            writer.Write('.');
+                        }
                     }
 
                     // Once the current row has been read through and the 
                     // string constructed then write it to the file using WriteLine.
+                    writer.WriteLine();
                 }
 
                 // After all rows and columns have been written then close the file.
                 writer.Close();
             }
         }
-
+        //Finish Open!!
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -554,17 +567,20 @@ namespace Portfolio1
 
                     // If the row begins with '!' then it is a comment
                     // and should be ignored.
-
+                    if(row == "!") { }
                     // If the row is not a comment then it is a row of cells.
                     // Increment the maxHeight variable for each row read.
-
+                    if(row != "!") { maxHeight++; }
                     // Get the length of the current row string
                     // and adjust the maxWidth variable if necessary.
+                    if(row.Length != maxWidth)
+                        maxWidth = row.Length;
                 }
 
                 // Resize the current universe and scratchPad
                 // to the width and height of the file calculated above.
-
+                universe = new bool[maxWidth, maxHeight];
+                scratchPad = new bool[maxWidth, maxHeight];
                 // Reset the file pointer back to the beginning of the file.
                 reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
@@ -576,17 +592,26 @@ namespace Portfolio1
 
                     // If the row begins with '!' then
                     // it is a comment and should be ignored.
-
+                    if (row == "!") { }
                     // If the row is not a comment then 
                     // it is a row of cells and needs to be iterated through.
+                    else
                     for (int xPos = 0; xPos < row.Length; xPos++)
                     {
                         // If row[xPos] is a 'O' (capital O) then
                         // set the corresponding cell in the universe to alive.
-
+                        if(row[xPos] == 'O')
+                        {
+                            universe[xPos, random] = true;
+                        }
                         // If row[xPos] is a '.' (period) then
                         // set the corresponding cell in the universe to dead.
+                        if (row[xPos] == '.')
+                        {
+                            universe[xPos, random] = false;
+                        }
                     }
+
                 }
 
                 // Close the file.
@@ -642,6 +667,7 @@ namespace Portfolio1
             Properties.Settings.Default.TimerInterval = timeInt;
             Properties.Settings.Default.mXWidth = mX;
             Properties.Settings.Default.mYHeight = mY;
+            Properties.Settings.Default.BoundryT = gridT;
             Properties.Settings.Default.Save();
         }
 

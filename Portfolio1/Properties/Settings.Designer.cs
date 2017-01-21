@@ -130,5 +130,17 @@ namespace Portfolio1.Properties {
                 this["mYHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BoundryT {
+            get {
+                return ((int)(this["BoundryT"]));
+            }
+            set {
+                this["BoundryT"] = value;
+            }
+        }
     }
 }
