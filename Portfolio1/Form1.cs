@@ -21,7 +21,7 @@ namespace Portfolio1
         int mX = 30;
         int mY = 30;
         int gridT = 0;
-        int random;
+        int random = 0;
 
         bool[,] Playtemp;
         bool[,] universe;
@@ -54,6 +54,10 @@ namespace Portfolio1
             mY = Properties.Settings.Default.mYHeight;
             gridT = Properties.Settings.Default.BoundryT;
 
+            gColorTemp = Properties.Settings.Default.TempGC;
+            dColorTemp = Properties.Settings.Default.TempGCx10;
+
+
             universe = new bool[mX, mY];
             scratchPad = new bool[mX, mY];
             Playtemp = new bool[mX, mY];
@@ -67,28 +71,23 @@ namespace Portfolio1
             else { };
 
         }
-        /////////////////////////////////////////////////////////////////////////////
+        
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (gridT == 1)
-            {
-
-            }
-            else if (gridT == 2)
-            {
-                FiniteNextGen();
-            }
-            else if (gridT == 3)
+            NextGen();
+        
+            if (gridT == 3)
             {
 
             }
             
             gPanel1.Invalidate();
         }
-        /////////////////////////////////////////////////////////////////////////////
-        private void FiniteNextGen()
+        //Checks to see if in the next generation if it is alive or dead
+        private void NextGen()
         {
             generations++;
+            
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -115,54 +114,121 @@ namespace Portfolio1
             universe = scratchPad;
             scratchPad = temp;
         }
-
-        public bool GetElement(int i, int j)
-        {
-            return universe[i % mX,j % mY];
-        }
-
+        //Gets the Neighbor Count for the current live cells
         private int NeighborCount(int x, int y)
         {
             int cout = 0;
 
-            if(x < (mX - 1)){
+            #region For
+            //for (int nx = x - 1; nx <= x + 1; nx++)
+            //{
+            //    if (nx < 0 || nx >= gPanel1.ClientSize.Width)
+            //    {
+            //        continue;
+            //    }
+
+            //    for (int ny = y - 1; ny <= y +1 ; ny++)
+            //    {
+            //        if (ny < 0 || ny >= gPanel1.ClientSize.Height)
+            //        {
+            //            continue;
+            //        }
+            //        if (nx ==x || y == ny)
+            //        {
+            //            continue;
+            //        }
+            //        if(universe[nx,ny])
+            //        cout++;
+            //    }
+            //}
+            #endregion
+            //Starts Toroidal
+            if (gridT == 1)
+            {
+                for (int col = y - 1; col <= y + 1; ++col)
+                {
+                    int tempcol = col;
+                    if (col < 0)
+                    {
+                        tempcol = (universe.GetLength(1) - 1);
+
+                    }
+                    else if (col > (universe.GetLength(1) - 1))
+                    {
+                        tempcol = 0;
+
+                    }
+                    for (int row = x - 1; row <= x + 1; row++)
+                    {
+                        int temprow = row;
+
+                        if (row < 0)
+                        {
+                            temprow = (universe.GetLength(0) - 1);
+                        }
+                        else if (row > (universe.GetLength(0) - 1))
+                        {
+                            temprow = 0;
+                        }
+
+                        if (tempcol == y && temprow == x) { }
+                        else if (col < 0 || col >= mY || row < 0 || row >= mX)
+                        {
+                                if (universe[temprow, tempcol] == true)
+                                    cout++;
+                        }
+                    }
+                }
+            }
+
+            #region If
+            if (x < (mX - 1))
+            {
                 if (universe[x + 1, y] == true)
                     cout++;
             }
-            if (x < (mX - 1) && y < (mY - 1)){
+            if (x < (mX - 1) && y < (mY - 1))
+            {
                 if (universe[x + 1, y + 1] == true)
                     cout++;
             }
-            if (y < (mY - 1)){
+            if (y < (mY - 1))
+            {
                 if (universe[x, y + 1] == true)
                     cout++;
             }
-            if (y < (mY - 1) && x != 0){
+            if (y < (mY - 1) && x != 0)
+            {
                 if (universe[x - 1, y + 1] == true)
                     cout++;
             }
-            if (x != 0){
+            if (x != 0)
+            {
                 if (universe[x - 1, y] == true)
                     cout++;
             }
-            if (x != 0 && y != 0){
+            if (x != 0 && y != 0)
+            {
                 if (universe[x - 1, y - 1] == true)
                     cout++;
             }
-            if (y != 0){
+            if (y != 0)
+            {
                 if (universe[x, y - 1] == true)
                     cout++;
             }
 
-            if (x < (mX - 1) && y != 0){
+            if (x < (mX - 1) && y != 0)
+            {
                 if (universe[x + 1, y - 1] == true)
                     cout++;
             }
+            #endregion
 
             return cout;
 
         }
-
+        //Pains Everything onto The Panel
         private void gPanel1_Paint(object sender, PaintEventArgs e)
         {
             timer.Interval = timeInt;
@@ -195,7 +261,6 @@ namespace Portfolio1
                     rect.Width = wid;
                     rect.Height = high;
 
-
                     if (universe[x, y] == true)
                     {
                         e.Graphics.FillRectangle(cBrush, rect);
@@ -215,13 +280,16 @@ namespace Portfolio1
                         stringFormat.LineAlignment = StringAlignment.Center;
 
                         int neighbors = NeighborCount(x, y);
+
                         if (neighbors == 0) { }
                         else if (neighbors == 3 || neighbors == 2)
                         {
                             e.Graphics.DrawString(neighbors.ToString(), font, LiveCellBrush, rect, stringFormat);
                         }
                         else
+                        {
                             e.Graphics.DrawString(neighbors.ToString(), font, DeadCellBrush, rect, stringFormat);
+                        }
                     }
                 }
             }
@@ -248,7 +316,7 @@ namespace Portfolio1
             gPen.Dispose();
             cBrush.Dispose();
         }
-
+        //Initialize painting the live cell when clicking on said loctation
         private void gPanel1_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -316,15 +384,9 @@ namespace Portfolio1
         ///////////////////////////////////////////////////////////////////////////////////////////
         private void StepButton1_Click(object sender, EventArgs e)
         {
-            if (gridT == 1)
-            {
+            NextGen();
 
-            }
-            else if (gridT == 2)
-            {
-                FiniteNextGen();
-            }
-            else if (gridT == 3)
+            if (gridT == 3)
             {
 
             }
@@ -440,41 +502,31 @@ namespace Portfolio1
             }
             gPanel1.Invalidate();
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////
         private void nextToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (gridT == 1)
+            NextGen();
+
+            if (gridT == 3)
             {
 
             }
-            else if (gridT == 2)
-            {
-                FiniteNextGen();
-            }
-            else if (gridT == 3)
-            {
 
-            }
             gPanel1.Invalidate();
         }
 
         private void nextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (gridT == 1)
+            NextGen();
+
+            if (gridT == 3)
             {
 
             }
-            else if (gridT == 2)
-            {
-                FiniteNextGen();
-            }
-            else if (gridT == 3)
-            {
 
-            }
             gPanel1.Invalidate();
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             timer.Enabled = true;
@@ -524,7 +576,7 @@ namespace Portfolio1
                 // Prefix all comment strings with an exclamation point.
                 // Use WriteLine to write the strings to the file. 
                 // It appends a CRLF for you.
-                writer.WriteLine("!Name: " + dlg.FileName);
+                writer.WriteLine("!Name: " + "Name");
 
                 // Iterate through the universe one row at a time.
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -558,12 +610,13 @@ namespace Portfolio1
                 writer.Close();
             }
         }
-        //Finish Open!!
+        //Finished Open!! :D
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "All Files|*.*|Cells|*.cells";
             dlg.FilterIndex = 2;
+            random = 0;
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
@@ -582,16 +635,17 @@ namespace Portfolio1
 
                     // If the row begins with '!' then it is a comment
                     // and should be ignored.
-                    if(row == "!") { }
+                    if(row[0] == '!') { }
                     // If the row is not a comment then it is a row of cells.
                     // Increment the maxHeight variable for each row read.
-                    if(row != "!") { maxHeight++; }
+                    if(row[0] != '!') { maxHeight++; }
                     // Get the length of the current row string
                     // and adjust the maxWidth variable if necessary.
                     if(row.Length != maxWidth)
                         maxWidth = row.Length;
                 }
-
+                mX = maxWidth;
+                mY = maxHeight;
                 // Resize the current universe and scratchPad
                 // to the width and height of the file calculated above.
                 universe = new bool[maxWidth, maxHeight];
@@ -607,10 +661,10 @@ namespace Portfolio1
 
                     // If the row begins with '!' then
                     // it is a comment and should be ignored.
-                    if (row == "!") { }
+                    if (row[0] == '!') { continue; }
                     // If the row is not a comment then 
                     // it is a row of cells and needs to be iterated through.
-                    else
+                    
                     for (int xPos = 0; xPos < row.Length; xPos++)
                     {
                         // If row[xPos] is a 'O' (capital O) then
@@ -626,12 +680,95 @@ namespace Portfolio1
                             universe[xPos, random] = false;
                         }
                     }
+                    random++;
 
                 }
 
                 // Close the file.
                 reader.Close();
             }
+            gPanel1.Invalidate();
+        }
+
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2;
+            random = 0;
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(dlg.FileName);
+
+                // Create a couple variables to calculate the width and height
+                // of the data in the file.
+                int maxWidth = 0;
+                int maxHeight = 0;
+
+                // Iterate through the file once to get its size.
+                while (!reader.EndOfStream)
+                {
+                    // Read one row at a time.
+                    string row = reader.ReadLine();
+
+                    // If the row begins with '!' then it is a comment
+                    // and should be ignored.
+                    if (row[0] == '!') { }
+                    // If the row is not a comment then it is a row of cells.
+                    // Increment the maxHeight variable for each row read.
+                    if (row[0] != '!') { maxHeight++; }
+                    // Get the length of the current row string
+                    // and adjust the maxWidth variable if necessary.
+                    if (row.Length != maxWidth)
+                        maxWidth = row.Length;
+                }
+                // Resize the current universe and scratchPad
+                // to the width and height of the file calculated above.
+                // Reset the file pointer back to the beginning of the file.
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+                // Iterate through the file again, this time reading in the cells.
+                while (!reader.EndOfStream)
+                {
+                    // Read one row at a time.
+                    string row = reader.ReadLine();
+
+                    // If the row begins with '!' then
+                    // it is a comment and should be ignored.
+                    if (row[0] == '!') { continue; }
+                    // If the row is not a comment then 
+                    // it is a row of cells and needs to be iterated through.
+
+                    for (int xPos = 0; xPos < row.Length; xPos++)
+                    {
+                        // If row[xPos] is a 'O' (capital O) then
+                        // set the corresponding cell in the universe to alive.
+                        if (row[xPos] == 'O')
+                        {
+                            try
+                            {
+                                universe[xPos, random] = true;
+                            }
+                            catch (Exception)
+                            {
+                                ;
+                            }
+                        }
+                        // If row[xPos] is a '.' (period) then
+                        // set the corresponding cell in the universe to dead.
+                        if (row[xPos] == '.')
+                        {
+
+                        }
+                    }
+                    random++;
+
+                }
+
+                // Close the file.
+                reader.Close();
+            }
+            gPanel1.Invalidate();
         }
 
         private void gridVisableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -683,6 +820,10 @@ namespace Portfolio1
             Properties.Settings.Default.mXWidth = mX;
             Properties.Settings.Default.mYHeight = mY;
             Properties.Settings.Default.BoundryT = gridT;
+            gColorTemp = Properties.Settings.Default.TempGC;
+            dColorTemp = Properties.Settings.Default.TempGCx10;
+
+
             Properties.Settings.Default.Save();
         }
 
@@ -695,6 +836,9 @@ namespace Portfolio1
             cColor = Properties.Settings.Default.CellColor;
             LiveCellColor = Properties.Settings.Default.LiveCellColor;
             DeadCellColor = Properties.Settings.Default.DeadCellColor;
+            Properties.Settings.Default.TempGC = gColorTemp;
+            Properties.Settings.Default.TempGCx10 = dColorTemp;
+
 
             gPanel1.Invalidate();
         }
@@ -708,6 +852,8 @@ namespace Portfolio1
             cColor = Properties.Settings.Default.CellColor;
             LiveCellColor = Properties.Settings.Default.LiveCellColor;
             DeadCellColor = Properties.Settings.Default.DeadCellColor;
+            Properties.Settings.Default.TempGC = gColorTemp;
+            Properties.Settings.Default.TempGCx10 = dColorTemp;
 
             gPanel1.Invalidate();
         }
@@ -746,7 +892,7 @@ namespace Portfolio1
             gPanel1.Invalidate();
         }
 
-        private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        private void randomizefromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Random rand = new Random();
             float wid = (float)universe.GetLength(0);
@@ -763,7 +909,7 @@ namespace Portfolio1
             gPanel1.Invalidate();
         }
 
-        private void fromNewSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        private void randomizefromNewSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Seed dlg = new Seed();
 

@@ -32,5 +32,14 @@
     <Setting Name="BoundryT" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="Seed" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4221</Value>
+    </Setting>
+    <Setting Name="TempGC" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Blue</Value>
+    </Setting>
+    <Setting Name="TempGCx10" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Beige</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

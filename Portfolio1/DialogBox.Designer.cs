@@ -191,7 +191,7 @@
             // 
             this.label10.Location = new System.Drawing.Point(370, 195);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(102, 40);
+            this.label10.Size = new System.Drawing.Size(106, 40);
             this.label10.TabIndex = 12;
             this.label10.Text = "Dead Cell Neighbor Color";
             // 

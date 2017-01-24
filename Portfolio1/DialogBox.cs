@@ -114,10 +114,11 @@ namespace Portfolio1
                 button7.BackColor = dlg.Color;
             }
         }
+
         public Color DeadCell
         {
-            get { return button6.BackColor; }
-            set { button6.BackColor = value; }
+            get { return button7.BackColor; }
+            set { button7.BackColor = value; }
         }
 
         private void button5_Click(object sender, EventArgs e)

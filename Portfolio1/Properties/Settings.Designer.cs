@@ -142,5 +142,41 @@ namespace Portfolio1.Properties {
                 this["BoundryT"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4221")]
+        public int Seed {
+            get {
+                return ((int)(this["Seed"]));
+            }
+            set {
+                this["Seed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public global::System.Drawing.Color TempGC {
+            get {
+                return ((global::System.Drawing.Color)(this["TempGC"]));
+            }
+            set {
+                this["TempGC"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Beige")]
+        public global::System.Drawing.Color TempGCx10 {
+            get {
+                return ((global::System.Drawing.Color)(this["TempGCx10"]));
+            }
+            set {
+                this["TempGCx10"] = value;
+            }
+        }
     }
 }
